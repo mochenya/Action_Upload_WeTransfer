@@ -35,8 +35,8 @@ jobs:
             sudo ls
             echo "--------------------------------------------"
             
-        - name: File Md5
-          run: |
+       - name: File Md5
+         run: |
             echo "-----------正在设置权限-----------"
             sudo chmod 777 -R $GITHUB_WORKSPACE/Downloads
             echo "-----------权限设置完成-----------"
@@ -46,7 +46,7 @@ jobs:
             echo "-----------以上为 ${{ github.event.inputs.File_NAME }} 的Md5-----------"
             
 
-        - name: Upload File to WeTransfer
-          run: |
+       - name: Upload File to WeTransfer
+         run: |
             curl -sL https://git.io/file-transfer | sh
             ./transfer wet ./Downloads/${{ github.event.inputs.File_NAME }}
