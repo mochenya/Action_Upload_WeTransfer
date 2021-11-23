@@ -11,6 +11,14 @@ on:
         description: 'File_NAME'
         required: true
         default: 'lineage-18.1-20211028-UNOFFICIAL-markw.zip'
+    Upload_To_WeTransfer:
+        description: 'Upload_To_WeTransfer'
+        required: true
+        default: 'true'
+    Upload_To_CowTransfer:
+        description: 'Upload_To_CowTransfer'
+        required: true
+        default: 'false'
         
 jobs:
   build:
@@ -50,3 +58,8 @@ jobs:
          run: |
             curl -sL https://git.io/file-transfer | sh
             ./transfer wet ./Downloads/${{ github.event.inputs.File_NAME }}
+            
+       - name: Upload File to CowTransfer
+         run: |
+            curl -sL https://git.io/cowtransfer | sh
+            ./cowtransfer-uploader ./Downloads/${{ github.event.inputs.File_NAME }}
