@@ -28,9 +28,8 @@ jobs:
             cd ~/android/pe
             repo init -u https://github.com/PixelExperience/manifest -b eleven-plus
             repo sync -j$(nproc --all) -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
-            source build/envsetup.sh << EOF
+            source build/envsetup.sh
             lunch aosp_lavender-userdebug
-            EOF
             croot
             mka bacon -j$(nproc --all)
             cd $OUT
