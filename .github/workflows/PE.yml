@@ -1,0 +1,37 @@
+name: PE
+
+on:
+  workflow_dispatch:
+   inputs:
+        
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+       - name: Checkout
+         uses: actions/checkout@master
+           
+       - name: Install the build packages
+         run: |
+            sudo apt update
+            sudo apt install openjdk-8-jdk
+            sudo apt install bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-gtk3-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
+            mkdir ~/bin
+            PATH=~/bin:$PATH
+            curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+            chmod a+x ~/bin/repo
+            mkdir -p ~/android/pe
+            git config --global user.email "mochen20070702@gmail.com"
+            git config --global user.name "mochen"
+            cd ~/android/pe
+            repo init -u https://github.com/PixelExperience/manifest -b eleven-plus
+            repo sync -j$(nproc --all) -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+            source build/envsetup.sh << EOF
+            lunch aosp_lavender-userdebug
+            EOF
+            croot
+            mka bacon -j$(nproc --all)
+            cd $OUT
+            ls
