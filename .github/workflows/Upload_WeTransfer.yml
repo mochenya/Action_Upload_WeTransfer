@@ -45,13 +45,13 @@ jobs:
             
        - name: File Md5
          run: |
-            echo "-----------正在设置权限-----------"
             sudo chmod 777 -R $GITHUB_WORKSPACE/Downloads
-            echo "-----------权限设置完成-----------"
             cd $GITHUB_WORKSPACE/Downloads
-            echo -e "\n正在输出: ${{ github.event.inputs.File_NAME }} 的Md5"
+	    echo "-----------ZIP MD5-----------"
             sudo md5sum ${{ github.event.inputs.File_NAME }}
-            echo "-----------以上为 ${{ github.event.inputs.File_NAME }} 的Md5-----------"
+            echo -e "\n"
+            echo "-----------ZIP文件大小-----------"
+            sudo du -sh ${{ github.event.inputs.File_NAME }}
             
 
        - name: Upload File to WeTransfer
