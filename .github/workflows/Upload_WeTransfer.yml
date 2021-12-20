@@ -7,10 +7,6 @@ on:
         description: 'File_URL'
         required: true
         default: 'https://github.com/ShihabZzz/Releases/releases/download/146.0/lineage-18.1-20211028-UNOFFICIAL-markw.zip'
-    File_NAME:
-        description: 'File_NAME'
-        required: true
-        default: 'lineage-18.1-20211028-UNOFFICIAL-markw.zip'
     Upload_To_WeTransfer:
         description: 'Upload_To_WeTransfer'
         required: true
@@ -37,7 +33,7 @@ jobs:
          run: |
             sudo mkdir Downloads
             cd $GITHUB_WORKSPACE/Downloads
-            echo "-----------开始下载 : ${{ github.event.inputs.File_NAME }} -----------"
+            echo "-----------开始下载-----------"
             sudo aria2c "${{ github.event.inputs.File_URL }}"
             echo "--------------------------------------------"
             sudo ls
@@ -48,20 +44,20 @@ jobs:
             sudo chmod 777 -R $GITHUB_WORKSPACE/Downloads
             cd $GITHUB_WORKSPACE/Downloads
 	    echo "-----------ZIP MD5-----------"
-            sudo md5sum ${{ github.event.inputs.File_NAME }}
+            sudo md5sum ./*
             echo -e "\n"
             echo "-----------ZIP文件大小-----------"
-            sudo du -sh ${{ github.event.inputs.File_NAME }}
+            sudo du -sh ./*
             
 
        - name: Upload File to WeTransfer
          if: ${{ github.event.inputs.Upload_To_WeTransfer }} == 'true'
          run: |
             curl -sL https://git.io/file-transfer | sh
-            ./transfer wet ./Downloads/${{ github.event.inputs.File_NAME }}
+            ./transfer wet ./Downloads/*
             
        - name: Upload File to CowTransfer
          if: ${{ github.event.inputs.Upload_To_CowTransfer }} == 'true'
          run: |
             curl -sL https://git.io/cowtransfer | sh
-            ./cowtransfer-uploader ./Downloads/${{ github.event.inputs.File_NAME }}
+            ./cowtransfer-uploader ./Downloads/*
