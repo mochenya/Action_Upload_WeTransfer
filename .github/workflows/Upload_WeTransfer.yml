@@ -55,11 +55,13 @@ jobs:
             
 
        - name: Upload File to WeTransfer
+         if: ${{ github.event.inputs.Upload_To_WeTransfer }} == 'true'
          run: |
             curl -sL https://git.io/file-transfer | sh
             ./transfer wet ./Downloads/${{ github.event.inputs.File_NAME }}
             
        - name: Upload File to CowTransfer
+         if: ${{ github.event.inputs.Upload_To_CowTransfer }} == 'true'
          run: |
             curl -sL https://git.io/cowtransfer | sh
             ./cowtransfer-uploader ./Downloads/${{ github.event.inputs.File_NAME }}
