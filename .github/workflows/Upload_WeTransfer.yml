@@ -44,6 +44,7 @@ jobs:
             sudo chmod 777 -R $GITHUB_WORKSPACE/Downloads
             cd $GITHUB_WORKSPACE/Downloads
 	    echo "-----------ZIP MD5-----------"
+
             sudo md5sum ./*
             echo -e "\n"
             echo "-----------ZIP文件大小-----------"
