@@ -31,7 +31,7 @@ jobs:
            
        - name: Initialization environment
          run: |
-            sudo -E apt-get install sudo apt install git cpio aria2 brotli p7zip-full
+            sudo apt install git cpio aria2 brotli p7zip-full zip unzip gawk sed curl wget -y
        
        - name: Download File
          run: |
