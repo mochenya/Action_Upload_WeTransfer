@@ -34,7 +34,7 @@ jobs:
             sudo mkdir Downloads
             cd $GITHUB_WORKSPACE/Downloads
             echo "-----------开始下载-----------"
-            sudo aria2c "${{ github.event.inputs.File_URL }}"
+            sudo wget "${{ github.event.inputs.File_URL }}"
             echo "--------------------------------------------"
             sudo ls
             echo "--------------------------------------------"
