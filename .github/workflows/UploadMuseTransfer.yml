@@ -1,0 +1,48 @@
+name: Upload to MuseTransfer
+
+on:
+  workflow_dispatch:
+   inputs:
+    File_URL:
+        description: 'File_URL'
+        required: true
+        default: 'https://github.com/ShihabZzz/Releases/releases/download/146.0/lineage-18.1-20211028-UNOFFICIAL-markw.zip'
+        
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+       - name: Checkout
+         uses: actions/checkout@master
+           
+       - name: Initialization environment
+         run: |
+            sudo apt install git cpio aria2 brotli p7zip-full zip unzip gawk sed curl wget -y
+       
+       - name: Download File
+         run: |
+            mkdir Downloads
+            cd $GITHUB_WORKSPACE/Downloads
+            echo "-----------开始下载-----------"
+            aria2c "${{ github.event.inputs.File_URL }}"
+            echo "--------------------------------------------"
+            ls
+            echo "--------------------------------------------"
+            
+       - name: File Md5
+         run: |
+            sudo chmod 777 -R $GITHUB_WORKSPACE/Downloads
+            cd $GITHUB_WORKSPACE/Downloads
+            echo "-----------ZIP MD5-----------"
+            md5sum ./*
+            echo -e "\n"
+            echo "-----------ZIP文件大小-----------"
+            du -sh ./*
+
+       - name: Upload File to WeTransfer
+         run: |
+            curl -sL https://git.io/file-transfer | sh
+            ./transfer muse ./Downloads/*
+            
